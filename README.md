@@ -10,3 +10,4 @@
 ## Using
 
     python nord.py > a.bash; bash a.bash
+    openvpn /etc/openvpn/ovpn_tcp/{server here}
