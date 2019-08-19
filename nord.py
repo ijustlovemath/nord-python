@@ -1,6 +1,8 @@
 import sys
 import argparse
-
+import urllib.request
+import json
+'''
 from selenium import webdriver
 
 driver = webdriver.Firefox()
@@ -10,6 +12,13 @@ driver.get("https:/nordvpn.com/servers/tools")
 server = driver.find_element_by_class_name("mb-3").text
 
 driver.quit()
+'''
+
+url = "https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations"
+request = urllib.request.Request(url=url, headers={"User-Agent":"Mozilla/5.0"})
+raw_json = urllib.request.urlopen(request).read()
+recommendations = json.loads(raw_json)
+server = recommendations[0]["hostname"]
 
 protocols = ["tcp", "udp"]
 
