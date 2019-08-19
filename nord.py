@@ -18,6 +18,8 @@ port_lookup = {
         , "udp" : "1194"
 }
 
+print(f"echo Connecting to recommended server: {server}")
+
 for protocol in protocols:
     port = port_lookup[protocol]
     config_file = f"{server}.{protocol}{port}.ovpn"
