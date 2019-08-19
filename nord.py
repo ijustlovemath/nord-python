@@ -2,17 +2,6 @@ import sys
 import argparse
 import urllib.request
 import json
-'''
-from selenium import webdriver
-
-driver = webdriver.Firefox()
-
-driver.get("https:/nordvpn.com/servers/tools")
-
-server = driver.find_element_by_class_name("mb-3").text
-
-driver.quit()
-'''
 
 url = "https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations"
 request = urllib.request.Request(url=url, headers={"User-Agent":"Mozilla/5.0"})
@@ -36,7 +25,7 @@ for protocol in protocols:
             + f"ovpn_legacy/servers/{config_file}"
     )
 
-    print(f"wget {config_file_url} > /dev/null")
+    print(f"wget {config_file_url} >/dev/null 2>&1")
     print(f"sudo mv {config_file} /etc/openvpn/ovpn_{protocol}/"
         + f"{server}.{protocol}.ovpn"
     )
