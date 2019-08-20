@@ -4,12 +4,8 @@ Python 3.6+
 
 ## Installing
 
-1. Install `geckodriver`, `wget`, `openvpn` and `firefox` from your package manager
-2. Create a virtual environment:
-
-        virtualenv venv --distribute
-        source venv/bin/activate
-        pip install -r requirements.txt
+1. Install `git`, `wget` and `openvpn` from your package manager
+2. Clone this repository into a folder of your choice: `git clone https://github.com/ijustlovemath/nord-python.git your_folder_here`
 
 ## Using
 
