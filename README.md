@@ -23,4 +23,4 @@ To connect automatically with UDP:
 
 Q. Why save the script output to a file and run that, why not just pipe into bash?
 
-A. Firstly, so that you can read the script before executing it, but more importantly, because if you don't, the Selenium driver will not have enough time to load the recommended server.
+A. Firstly, so that you can read the script before executing it. You can pipe to bash/fish/zsh if you like, however.
