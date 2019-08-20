@@ -16,7 +16,9 @@ port_lookup = {
         , "udp" : "1194"
 }
 
-print(f"echo Connecting to recommended server: {server}")
+base_config_path = "/etc/openvpn/ovpn_"
+
+print(f"echo Recommended server identified: {server}")
 
 for protocol in protocols:
     port = port_lookup[protocol]
@@ -25,8 +27,10 @@ for protocol in protocols:
             + f"ovpn_legacy/servers/{config_file}"
     )
 
+    print(f"echo Downloading VPN configuration for {protocol.upper()}")
     print(f"wget {config_file_url} >/dev/null 2>&1")
-    print(f"sudo mv {config_file} /etc/openvpn/ovpn_{protocol}/"
+    print(f"echo \"Installing VPN configuration for {protocol.upper()} (requires sudo)\"")
+    print(f"sudo mv {config_file} {base_config_path}{protocol}/"
         + f"{server}.{protocol}.ovpn"
     )
 
@@ -48,12 +52,11 @@ group.add_argument("--udp"
 
 options = parser.parse_args(sys.argv[1:])
 
-base_config_path = "/etc/openvpn/ovpn_"
-
 for protocol in protocols:
     locals()[f"{protocol}_connect_cmd"] = f"sudo openvpn {base_config_path}{protocol}/{server}.{protocol}.ovpn"
 
 if options.tcp or options.udp:
+    print("echo Connecting automatically...")
     if options.tcp:
         print(tcp_connect_cmd)
 
