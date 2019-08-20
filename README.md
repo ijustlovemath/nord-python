@@ -2,12 +2,12 @@
 
 Python 3.6+
 
-## Installing
+## Installation
 
 1. Install `git`, `wget` and `openvpn` from your package manager
 2. Clone this repository into a folder of your choice: `git clone https://github.com/ijustlovemath/nord-python.git your_folder_here`
 
-## Using
+## Usage
 
     python nord.py > a.bash; bash a.bash
 
@@ -18,6 +18,10 @@ To connect automatically with TCP:
 To connect automatically with UDP:
 
     python nord.py --udp > a.bash; bash a.bash
+
+To have configuration files installed to `/etc/openvpn/client`, as is done in OpenVPN2.4+, pass in `--openvpn24`:
+
+    python nord.py --openvpn24 > a.bash; bash a.bash
 
 ## FAQ
 
