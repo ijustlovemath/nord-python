@@ -73,7 +73,7 @@ def main(args):
         )
 
     for protocol in protocols:
-        locals()[f"{protocol}_connect_cmd"] = f"sudo openvpn {install_dir(protocol)}/{server}.{protocol}.ovpn"
+        globals()[f"{protocol}_connect_cmd"] = f"sudo openvpn {install_dir(protocol)}/{server}.{protocol}.ovpn"
 
     if options.tcp or options.udp:
         print("echo Connecting automatically...")
@@ -87,7 +87,7 @@ def main(args):
         for protocol in protocols:
             print("echo To connect with {upper}: {command}".format(
                     upper=protocol.upper()
-                    , command=locals()[protocol + "_connect_cmd"]
+                    , command=globals()[protocol + "_connect_cmd"]
                 )
             )
 
