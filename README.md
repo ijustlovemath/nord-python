@@ -27,4 +27,12 @@ To have configuration files installed to `/etc/openvpn/client`, as is done in Op
 
 Q. Why save the script output to a file and run that, why not just pipe into bash?
 
-A. Firstly, so that you can read the script before executing it. You can pipe to bash/fish/zsh if you like, however.
+A. Firstly, so that you can read the script before executing it. You can pipe to bash/fish/zsh if you like, however. You'll need OpenVPN configured to read your username and password from a configuration file, however.
+
+Q. I'm getting this error:
+
+ERROR: Cannot open TUN/TAP dev /dev/net/tun: No such device (errno=19)
+
+What gives?
+
+A. This happens when your kernel has been upgraded and you haven't rebooted. You'll have to reboot like a filthy Windows user to make the VPN work again.
