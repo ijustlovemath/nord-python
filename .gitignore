@@ -1,4 +1,6 @@
 a.bash
+a.sh
+*.creds
 venv
 __pycache__
 *.pyc

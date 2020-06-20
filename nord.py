@@ -2,6 +2,7 @@ import sys
 import argparse
 import urllib.request
 import json
+import os
 
 protocols = ["tcp", "udp"]
 
@@ -14,6 +15,11 @@ base_config_path = "/etc/openvpn/ovpn_"
 
 options = lambda:0
 options.openvpn24 = False
+
+def FileThatExists(string):
+    if not os.path.isfile(string):
+        raise argparse.ArgumentTypeError(f"{string} is not a file that exists")
+    return string
 
 def recommended_server():
     url = "https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations"
@@ -37,6 +43,12 @@ def main(args):
     parser.add_argument("--openvpn24"
         , action="store_true"
         , help="install VPN configurations to /etc/openvpn/client instead of /etc/openvpn/ovpn_{tcp,udp}"
+    )
+
+    parser.add_argument("--auth-file"
+        , type=FileThatExists
+        , default=None
+        , help="file containing username and password for saved OpenVPN authentications. Username on one line, password on the next."
     )
 
     group = parser.add_mutually_exclusive_group()
@@ -72,22 +84,25 @@ def main(args):
             + f"{server}.{protocol}.ovpn"
         )
 
+    commands = dict()
     for protocol in protocols:
-        globals()[f"{protocol}_connect_cmd"] = f"sudo openvpn {install_dir(protocol)}/{server}.{protocol}.ovpn"
+        commands[protocol] = f"sudo openvpn --config {install_dir(protocol)}/{server}.{protocol}.ovpn"
+        if options.auth_file:
+            commands[protocol] += f" --auth-user-pass {options.auth_file}"
 
     if options.tcp or options.udp:
         print("echo Connecting automatically...")
         if options.tcp:
-            print(tcp_connect_cmd)
+            print(commands["tcp"])
 
         if options.udp:
-            print(udp_connect_cmd)
+            print(commands["udp"])
 
     else:
         for protocol in protocols:
             print("echo To connect with {upper}: {command}".format(
                     upper=protocol.upper()
-                    , command=globals()[protocol + "_connect_cmd"]
+                    , command=commands[protocol]
                 )
             )
 
