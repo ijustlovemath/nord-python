@@ -1,0 +1,8 @@
+[Unit]
+Description=Simple daemon to auto-kill provided binaries when a VPN disconnects
+
+[Service]
+ExecStart=/bin/bash /usr/local/bin/kill-if-disconnected.sh qbittorrent
+
+[Install]
+WantedBy=multi-user.target

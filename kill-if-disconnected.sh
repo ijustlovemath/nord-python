@@ -13,14 +13,23 @@ function vpn_connected () {
     return
 }
 
+echo -n "At startup, VPN is"
 if vpn_connected; then
      echo "connected";
 else
     echo "not connected";
 fi
 
+function slow_kill () {
+    pkill $targets
+}
+
+watch -n 5 -x bash -c slow_kill & 
+
 # dependencies:
 # ip, pkill
+# optional dependencies:
+# notify-send
 
 # Daemon mode: 
 # 1. Look for falling edge of vpn connection
@@ -28,24 +37,29 @@ fi
 # 3. To kill:
 #  - pkill
 polling_interval=1
+
+# Initial setup
 vpn_connected
 previously_connected_status=$?
 sleep $polling_interval
 
+echo "Entering main service loop"
+# Main dameon loop
 while true; do
     vpn_connected
     current_status=$?
     if [[ ! $current_status -eq 0 && $previously_connected_status -eq 0 ]]; then
-        echo "killing targets"
+        echo "VPN disconnected, killing targets"
         while IFS=" " read -r target; do
-        
-            echo "would have killed '$target'"
+            echo -n "Killing '$target'..."
+            if pkill $target; then
+                echo Success
+            else
+                echo Failed
+                notify-send "Unable to VPN auto kill $target, you should close it!"
+            fi
         done < <(echo $targets)
-    else
-        echo "no change in connection status"
     fi
     previously_connected_status=$current_status
     sleep $polling_interval
 done
-
-sleep 1
