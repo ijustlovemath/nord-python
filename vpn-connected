@@ -12,10 +12,12 @@ function vpn_connected () {
     return
 }
 
-echo -n "VPN is "
-if ! vpn_connected; then
-    echo -n "not "
+if [ "$1" != "-q" ]; then
+    echo -n "VPN is "
+    if ! vpn_connected; then
+        echo -n "not "
+    fi
+    echo connected
 fi
-echo connected
 
 vpn_connected
