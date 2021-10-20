@@ -88,7 +88,7 @@ def main(args):
     for protocol in protocols:
         commands[protocol] = f"sudo openvpn --config {install_dir(protocol)}/{server}.{protocol}.ovpn"
         if options.auth_file:
-            commands[protocol] += f" --auth-user-pass {options.auth_file}"
+            commands[protocol] += f" --auth-user-pass {options.auth_file} --auth-nocache"
 
     if options.tcp or options.udp:
         print("echo Connecting automatically...")
