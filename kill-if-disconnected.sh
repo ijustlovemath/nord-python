@@ -20,12 +20,6 @@ else
     echo "not connected";
 fi
 
-function slow_kill () {
-    pkill $targets
-}
-
-watch -n 5 -x bash -c slow_kill & 
-
 # dependencies:
 # ip, pkill
 # optional dependencies:
@@ -46,11 +40,12 @@ sleep $polling_interval
 echo "Entering main service loop"
 # Main dameon loop
 while true; do
-    vpn_connected
-    current_status=$?
-    if [[ ! $current_status -eq 0 && $previously_connected_status -eq 0 ]]; then
-        echo "VPN disconnected, killing targets"
+    if ! vpn_connected; then
         while IFS=" " read -r target; do
+            # To keep the logs quiet, don't try and kill if it's not running 
+            if ! pgrep $target >/dev/null 2>&1; then
+                continue
+            fi
             echo -n "Killing '$target'..."
             if pkill $target; then
                 echo Success
@@ -60,6 +55,5 @@ while true; do
             fi
         done < <(echo $targets)
     fi
-    previously_connected_status=$current_status
     sleep $polling_interval
 done
