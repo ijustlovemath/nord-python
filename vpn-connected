@@ -11,13 +11,19 @@ function vpn_connected () {
     false
     return
 }
-
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NORMAL='\033[0m'
 if [ "$1" != "-q" ]; then
     echo -n "VPN is "
     if ! vpn_connected; then
+        echo -ne "${RED}"
         echo -n "not "
+    else
+        echo -ne "${GREEN}"
     fi
-    echo connected
+    echo -e "connected${NORMAL}"
 fi
 
+# Exit status of script allows this to be used elsewhere
 vpn_connected
