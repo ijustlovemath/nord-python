@@ -1,5 +1,16 @@
 # nord-python: A simple CLI for connecting to NordVPN
 
+## Features
+
+- Easily connect using the provided `nord-connect` command
+- Simple script, easy to read and audit the whole connection sequence
+- Killswitch systemd service for ending programs after a disconnect (defaults to qbittorrent)
+- Check if you're connected using the provided `vpn-connected` command. Use it silently in scripts as well:
+
+```
+vpn-connected -q && echo "vpn online" || echo "vpn offline"
+``` 
+
 ## Requirements
 
 Python 3.6+
