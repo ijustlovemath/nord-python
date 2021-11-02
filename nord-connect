@@ -1,5 +1,5 @@
 #!/bin/bash
-connect_script="$(mktemp)"
+connect_script="$(mktemp nord-python.XXXXXXXXXX --tmpdir)"
 python /usr/local/bin/nord.py --auth-file /etc/openvpn/auth.txt --openvpn24 --tcp > $connect_script
 chmod +x $connect_script
 bash -c $connect_script
