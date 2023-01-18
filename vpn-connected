@@ -1,6 +1,24 @@
 #!/bin/bash
+set -o pipefail
 
-function vpn_connected () {
+function wireguard_connected () {
+# $(($(date +%s) - $(sudo wg show wg0 latest-handshakes | awk '{ print $2; }')))
+    now_="$(date +%s)"
+    latest="$(sudo wg show wg0 latest-handshakes 2>/dev/null | awk '{ print $2; }')"
+    if [[ -z "$latest" ]]; then
+        false
+        return
+    fi
+    # 5 minute timeout
+    if [[ "(($now_ - $latest))" -gt 300 ]]; then
+        false
+        return
+    fi
+    true
+    return    
+}
+
+function openvpn_connected () {
     while read -r line
     do
         if [[ "$line" == "0.0.0.0/1"*"dev tun"* ]]; then
@@ -11,6 +29,11 @@ function vpn_connected () {
     false
     return
 }
+
+function vpn_connected () {
+    wireguard_connected $@
+}
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NORMAL='\033[0m'
